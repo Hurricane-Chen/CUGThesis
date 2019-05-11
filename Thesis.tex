@@ -8,15 +8,15 @@
 \include{statement}
 \include{title}
 
-\title{论文题目} %论文题目
-\author{作者姓名} %作者姓名
+\title{基于IPv6的HTTP/2过渡应用的设计与实现} %论文题目
+\author{陈立翔} %作者姓名
 \date{\today} %日期，默认当日
-\school{院系名称} %院系名称
-\classnum{专业} %专业
-\stunum {学号} %学号
-\instructorone{某某某} %指导教师1姓名
+\school{计算机学院} %院系名称
+\classnum{计算机科学与技术} %专业
+\stunum {20151001270} %学号
+\instructorone{张峰} %指导教师1姓名
 \instructoronelevel{副教授}
-\instructortwo{某某} %指导教师2姓名
+\instructortwo{陈伟涛} %指导教师2姓名
 \instructortwolevel{副教授}
 
 \usepackage{makecell}
@@ -27,9 +27,12 @@
 \begin{document}
 	\maketitle
 	\makestatement
-	
-	\begin{cnabstract}{关键词；关键词；关键词；关键词}
-		摘要
+		
+	\begin{cnabstract}{IPv6 协议；HTTP/2 协议；HTTP 网关；反向代理；负载均衡；Go语言； }
+		随着互联网的快速发展，网络早已成为人们生活中不可缺少的部分。同时随着我国网民人口的不断增长，
+	互联网环境正在变得愈发复杂。如何用有限的服务器资源应对更大的并发连接，如何让更多的设备
+	方便地接入网络，如何确保网络服务的安全性、防御潜在的攻击，这都是新时代各个单位正在面临的挑战。
+		
 	\end{cnabstract}
 	
 	\begin{enabstract}{keyword; keyword; keyword; keyword}
@@ -42,9 +45,8 @@
 	
 	%--------------------------------------------- 第一章 ---------------------------------------------
 	\begin{spacing}{2}
-		\section{第一章}
+		\section{绪论}
 	\end{spacing}
-	引言
 	\subsection{第一章第一小节}
 	第一小节，引用实例\cite{引用}，按照格式填写mybib.bib
 	\subsection{第一章第二小节}
@@ -98,7 +100,7 @@
 		\scalebox{1.0}{
 			\begin{tabular}{ccc}
 				\toprule  %添加表格头部粗线
-				姓名& 学号& 性别\\
+				姓名& 编号& 性别s\\
 				\midrule  %添加表格中横线
 				Steve Jobs& 001& Male\\
 				Bill Gates& 002& Female\\
