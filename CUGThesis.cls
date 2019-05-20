@@ -502,48 +502,13 @@
 					\makebox[#1][l]{\quad\defschool} \\
 			\end{tabular}}\\
 			\vspace{6em}
-			{\sanhao \zhdigits{2018}年\zhdigits{5}月}\\
+			{\sanhao \zhdigits{2019}年\zhdigits{5}月}\\
 		\end{center}
 	\end{titlepage}
 }
 
 \RequirePackage{setspace}
 %设置命令
-\newcommand{\makestatement}[2][0]{
-	\clearpage
-	\thispagestyle{empty}
-	\vspace*{1em}
-	\begin{center}
-\begin{spacing}{1.25}{
-		\hei \sanhao
-		中国地质大学（武汉）学士学位论文原创性声明
-}
-\end{spacing}
-	\end{center}
-
-
- %\@title
- \song \sihao
-
-本人郑重声明：本人所呈交的学士学位论文《\@title》，是本人在指导老师的指导下，在中国地质大学（武汉）攻读学士学位期间独立进行研究工作所取得的成果。
-论文中除已注明部分外不包含他人已发表或撰写过的研究成果，对论文的完成提供过帮助的有关人员已在文中说明并致以谢意。
-
-本人所呈交的学士学位论文没有违反学术道德和学术规范，没有侵权行为，并愿意承担由此而产生的法律责任和法律后果。\\
-
-	\begin{spacing}{1}
-	\rightline{
-	\begin{tabular}{r}
-		\\
-		学位论文作者签名：\uline{\makebox[6em]{}}\\
-		\\
-		日期： \hspace{4em}年 \hspace{2em} 月 \hspace{2em} 日
-	\end{tabular}
-	}
-	\end{spacing}
-	
-	\clearpage
-}
-
 
 
 \newcommand{\makeToc}{%
