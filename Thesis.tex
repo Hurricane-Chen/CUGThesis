@@ -14,15 +14,18 @@
 \school{计算机学院} %院系名称
 \classnum{计算机科学与技术} %专业
 \stunum {20151001270} %学号
-\instructorone{张峰} %指导教师1姓名
+\instructorone{陈伟涛} %指导教师1姓名
 \instructoronelevel{副教授}
-\instructortwo{陈伟涛} %指导教师2姓名
+\instructortwo{张峰} %指导教师2姓名
 \instructortwolevel{副教授}
 
 \usepackage{makecell}
 \usepackage{multicol}
 \usepackage{multirow}
 \usepackage{hyperref}
+\usepackage{natbib}
+
+\bibliographystyle{unsrtnat}
 
 \begin{document}
 	\maketitle
@@ -30,63 +33,45 @@
 
 	\begin{cnabstract}{IPv6 协议；HTTP/2协议；HTTP 网关；反向代理；负载均衡；Go语言；}
 		今天，网络早已成为人们生活中不可缺少的部分。同时随着我国网民人口的不断增长，
-	互联网环境正在变得愈发复杂。在服务端，开发和运维人员需要利用有限的服务器资源应对更大的并发请求和越来越多的潜在的网络攻击。
-	在这种情况下，原有的一些网络协议已经无法满足要求。目前，IPv4的公网地址资源已经枯竭，早在2011年
-	亚洲地区就已经无法分配到IPv4地址；而HTTP/1.1协议经过若干次修订后依然被诟病效率过低和功能不足。
-	IETF（Internet Engineering Task Force） 发布的 IPv6和HTTP/2协议相关标准已经在很大程度上解决了这些问题，
+	互联网环境正在变得愈发复杂。在服务端，我们急需将我们旧有服务使用的IPv4和HTTP/1.1协议迭代更新至IPv6和HTTP/2协议以解决旧协议存在的一系列问题。
 	如何将旧有的Web应用过渡支持IPv6和HTTP/2是我们目前面临的重要挑战。\par
 		本文对于如何让现有的IPv4环境下仅支持HTTP/1.1协议的Web应用能够在IPv4和IPv6双栈环境下工作并
 	支持HTTP/2协议，同时尽可能提高服务端的并发性能，开展了以下研究工作：
 	\begin{enumerate}
-		\item 通过对 Go 语言技术的深入研究，分析其协程和并发模型的技术特点。Go 语言是一门在语言层面
-		实现了协程的语言，其实现能够避免操作系统调用产生的开销，单机轻松构建百万级协程，CPU资源的利用率极高，
-		是近年来服务端开发中解决高并发问题的重要突破点。
+		\item 通过对 Go 语言技术的深入研究，分析其协程和并发模型的技术特点。并基于这些技术特点开发本网关。
 		\item 比较了 RFC 标准中 HTTP/1.1 和 HTTP/2 报文的区别，分析了如何将 HTTP/1.1 的报文加工处理
-		成 HTTP/2 的报文。同时结合 Go 语言中原生的 net/http 和 tls 库对报文增加 HTTPS 加密，从而
-		兼容目前主流浏览器的实现。
+		成 HTTP/2 的报文。
 		\item 为了将 HTTP/1.1 应用过渡支持 HTTP/2 ,本文采用 Go 语言技术设计了一个 HTTP 网关。该网关
 		通过反向代理技术，在无需对原有应用进行任何修改的情况下，将其升级为支持 HTTP/2 协议，并可在 IPv4和
 		IPv6双栈环境下工作。
 		\item 基于加权轮询算法和一致性哈希算法对该网关设计了负载均衡策略，
 		使得该网关能够支持横向扩容的 Web 应用，应对更复杂的并发情况。
-		\item 对该网关进行了压力测试，对比目前市场上提供反向代理功能的服务器如 Apache， Nginx 等，
-		得出该网关在一些情况下能够提高系统并发数和减少响应时间，提升用户体验。并通过火焰图分析该网关在
+		\item 对该网关进行了压力测试，并通过火焰图分析该网关在
 		实际工作环境中的性能瓶颈。
 	\end{enumerate}
 		\par
-		综上所述，本文设计的基于 Go 语言的 HTTP 反向代理网关，能够作为在IPv4和IPv6双栈环境下的 HTTP/2 过渡应用，
-	并且具有较好的并发性能。经过测试，具有一定实用价值。
+		综上所述，本文设计的基于 Go 语言的 HTTP 反向代理网关，能够在多平台下作为在IPv4和IPv6双栈环境下的 HTTP/2 过渡应用，
+	并且具有较好的并发性能。其提供的负载均衡功能可以使得用户轻松对应用进行横向扩容。经过测试，具有一定实用价值。
 	\end{cnabstract}
 	
 	\begin{enabstract}{IPv6 Protocol; HTTP/2 Protocol; HTTP Gateway; Reverse Proxy; Load Balancing; The Go Programming Language;}
 		The Internet has become an indispensable part of people's lives nowadays.
-		At the same time, with the growth of the netizen population in China, the Internet 
-		environment is becoming more and more complicated. On the server side, development and operations
-		personnel need to use limited server resouces to handle larger concurrent requests and more 
-		pontential network attacks. In this case, some of the old network protocols are not 
-		sufficient enough. At present, hte public network address resources of IPv4 have been
-		exhausted. As early as 2011, the Asian region has been unable to allocate IPv4 addresses; 
-		and the HTTP/1.1 protocol has been criticized for being inefficient and short of functions
-		 after serveral revisions. IETF(Internet Engineering Task Force) had published IPv6 and HTTP/2 protocol and it had largely solved 
-		 these problems.\par 
-		 This article describes how to enable the Web application that supports only the HTTP/1.x protocol
-		 in the existing IPv4 environment to work in the IPv4 and IPv6 dual-stack environment and support 
-		 the HTTP/2 protocol, while improving the concurrent performance of the server as much as possible. research work: \par 
+		At the same time, with the continuous growth of the netizen population in China, the Internet environment is becoming 
+		more and more complicated. On the server side, we urgently need to iteratively update the IPv4 and HTTP/1.1 protocols
+		 used by our legacy services to the IPv6 and HTTP/2 protocols to resolve a series of problems with the old protocols.
+		  How to transition legacy Web applications to support IPv6 and HTTP/2 is an important challenge for us today.\par 
+		  In this paper, the following research work is carried out on how to make the Web application supporting only the
+		   HTTP/1.1 protocol in the existing IPv4 environment work in the IPv4 and IPv6 dual-stack environment and support
+		  the HTTP/2 protocol while improving the concurrent performance of the server. :\par 
 		 \begin{enumerate}
-			\item  Through the in-depth study of Go (programming language) technology, analyze the technical characteristics of its coroutine and concurrency model. 
-			Go is a language that implements coroutine at the language level. Its implementation can avoid the overhead caused by operating system calls. 
-			It is easy to build a million-level coroutine in a single machine. The utilization of CPU resources is extremely high. An important breakthrough to address high concurrency issues.
-			\item Compare the difference between HTTP/1.1 and HTTP/2 messages in the RFC standard, and analyze how to process HTTP/1.1 messages into HTTP/2 messages. At the same time, 
-			it combines the native net/http and tls libraries in the Go language to add HTTPS encryption to the message, which is compatible with the current mainstream browser implementation.
-			\item  Based on the weighted round-robin algorithm and the consistent hash algorithm, a load balancing strategy is designed for the gateway, which enables the gateway to support
-			 horizontally expanded Web applications and cope with more complex concurrency situations.
-			 \item Test the gateway. Compared with the servers that provide reverse proxy functions on the market, such as Apache, Nginx, etc., it can be concluded
-			  that the gateway can improve the number of concurrent systems and reduce response time in some cases, improving the user experience. The performance of the gateway
-			   in the actual working environment is analyzed through the flame graph.
+			\item  Through the in-depth study of Go language technology, analyze the technical characteristics of its coroutine and concurrency model. The gateway is developed based on these technical features.
+			\item Compare the differences between HTTP/1.1 and HTTP/2 messages in the RFC standard, and analyze how to process HTTP/1.1 messages into HTTP/2 messages.
+			\item  In order to support the HTTP/1.1 application transition to HTTP/2, this article uses Go language technology to design an HTTP gateway. The gateway uses reverse proxy technology to upgrade to support the HTTP/2 protocol without any modifications to the original application, and can work in both IPv4 and IPv6 dual stack environments.
+			 \item Based on the weighted round-robin algorithm and the consistent hash algorithm, a load balancing strategy is designed for the gateway, which enables the gateway to support horizontally expanded Web applications and cope with more complex concurrency situations.
+			 \item The gateway was stress tested and the performance bottleneck of the gateway in the actual working environment was analyzed by flame graph.
 		 \end{enumerate}
 		 \par
-		 In summary, the Go-based HTTP reverse proxy gateway designed in this paper can be used as an HTTP/2 transition application in IPv4 and IPv6 dual-stack environments, and has good concurrency
-		  performance. After testing, it has certain practical value.
+		 In summary, the Go-based HTTP reverse proxy gateway designed in this paper can be used as an HTTP/2 transition application in IPv4 and IPv6 dual-stack environments under multiple platforms, and has better concurrency performance. Its load balancing feature allows users to easily scale applications horizontally. After testing, it has certain practical value.
 	\end{enabstract}
 	
 	\makeToc
@@ -109,14 +94,15 @@
 	实现都强制要求数据通过 HTTPS 加密，而不是像 HTTP/1.x 协议那样
 	将数据明文发送。这显著增强了数据传输的安全性，有效避免数据被劫持等安全隐患。\par
 	将现有的应用迁移升级到这些新协议上将会是一个漫长且耗资巨大的过程。如何在今天这种多种协议共存的情况下，
-	将旧有的应用以尽可能低的成本过渡迁移到新协议上，且具有较好的性能？\par
-		目前国内外最广泛使用的HTTP服务器Apache和Nginx都支持反向代理并升级IPv6和HTTP/2协议的功能。
-		通过配置都可以支持通过反向代理将旧有的服务升级至支持IPv6和HTTP/2协议。
+	将旧有的应用以尽可能低的成本过渡迁移到新协议上，且具有较好的性能？这是我们当前面临的一个重要问题。\par
+	
 
 	\subsection{国内外相关工作介绍}
-	目前国内外市场上90\%以上的反向代理HTTP网关服务器为Apache 和 Nginx。这两者都基于C语言编写。也有很多人对这些网关进行了二次开发，例如中国工程师章亦春等人基于Nginx开发的OpenResty\cite{OpenResty}等。\par
-	这些网关在不断的迭代过程中也陆续加入了IPv6和HTTP/2协议的支持。它们由于久经实际生产环境考验，具有较强的稳定性。
-	但由于一些历史遗留原因，也或多或少存在诸如开发效率较低，并发能力较差等问题。
+	据统计，世界上前一百万个访问量最大的网站有80\%以上使用的Web Server 是 Apache HTTP Server 和 Nginx。
+	其中Nginx的占有率为44.2\%，Apache HTTP Server 的占有率为 39.0\%\cite{marques2018learning}。
+	这两者都基于 C 语言编写，并提供反向代理功能。也有很多人对这些网关进行了二次开发，例如中国工 程师章亦春等人基于 Nginx 开发的 OpenResty\cite{OpenResty}等。\par
+这些网关在不断的迭代过程中也根据RFC标准陆续加入了 IPv6 和 HTTP/2 协议的支持，且能够对旧有的协议通过反向代理进行升级。它 们由于久经实际生产环境考验，具有较强的稳定性。但由于一些历史遗留原因，也 或多或少存在诸如开发效率较低，并发能力较差等问题。\par 
+接下来简单介绍这两个Web Server的优势和缺陷。
 	\subsubsection{Apache}
 	Apache HTTP Server （简称Apache）是 Apache 软件基金会维护开发的一个开源HTTP服务器软件。它自1995年诞生以来，
 	一直是世界上最被广泛使用的HTTP Server。同时其也提供反向代理功能，并已加入 HTTP/2 和 IPv6 的支持。\par 
@@ -135,17 +121,23 @@
 	这可以大大减少操作系统切换上下文的开销，应对高并发连接。根据官方的测试结果，在理想情况下，Nginx单机
 	可以应对五万个并发连接，而在实际的运作中，可以支持二万至四万个连接。\par 
 	但是这也给Nginx带来了一个问题.在非Linux系统下,无法使用这些操作系统底层的API来进行I/O多路复用，这时
-	其并发性能会大大下降。对于情况较为复杂的跨平台服务端解决方案来说，Nginx并不合适。\par
+	其并发性能会大大下降。对于情况较为复杂的跨平台服务端解决方案来说，Nginx并不合适。\par 
+	\subsubsection{小结}
+	综上两个网关都具有优异的特性，但它们分别具有两个较大的缺点：抗并发能力较差和跨平台能力较差。那么，
+	能否设计一个支持IPv6和HTTP/2协议的反向代理网关，且具有较强的跨平台能力和并发性能?本文针对这一问题展开了研究。\par 
+
+
+
 	\subsection{论文主要工作和章节结构}
-	本文主要针对如何在IPv4和IPv6双栈环境下将旧有的HTTP/1.x的Web服务过渡升级支持HTTP/2设计了一个
-	网关。该网关通过反向代理的形式升级协议。并且该网关具有高并发和易跨平台的特性，避免了上述解决方案的一些缺点。\par 
+	本文主要针对如何在IPv4和IPv6双栈环境下将旧有的HTTP/1.1的Web服务过渡升级支持HTTP/2设计了一个
+	网关。该网关通过反向代理的形式升级协议。并且该网关通过Go语言编写，利用了其强大的并发模型，具有高并发和易跨平台的特性，避免了上述解决方案的一些缺点。\par 
 	论文的内容和章节结构如下：
 	\begin{enumerate}
 		\item 第一章：绪论。主要介绍了研究背景，以及通过反向代理升级IPv6和HTTP/2协议的这方面国内外的
 		一些成熟解决方案及其存在的问题，以及本文主要工作安排。
 		\item 第二章：Go 语言服务端相关技术介绍。简单介绍了Go语言的背景和一些内置库实现，并分析了其并发模型，
 		说明了Go语言应用在本项目的一些优势。
-		\item 第三章：HTTP/1.x 到 HTTP/2 的转换实现。深入分析了RFC标准中 HTTP/1.x 协议和 HTTP/2 协议的
+		\item 第三章：HTTP/1.1 到 HTTP/2 的转换实现。深入分析了RFC标准中 HTTP/1.1 协议和 HTTP/2 协议的
 		差异，根据这些差异拟定了程序中通过怎样的流程去升级HTTP协议。同时也对广泛使用的Websocket协议做了处理。
 		\item 第四章：IPv4 和 IPv6 双栈环境下反向代理功能的实现。介绍了本设计的核心功能，反向代理功能是如何
 		实现的，以及程序如何在IPv4和IPv6双栈环境下工作。并介绍了通过加权轮询算法和一致性哈希两种算法设计的两种负载均衡策略。
@@ -167,9 +159,13 @@
 	这使得Go编写的程序可以较为容易地交叉编译并在多平台运行。\par
 	Go也在一定程度上支持一些面向对象编程的方法。其程序以包的形式组织，包实质上是一个包含Go文件的文件夹。包内的代码共享相同的命名空间，为区分包内
 	包外的私有成员，Go将以大写字母开头的对象（包括函数，变量等）对其它包可见，其它的则不可见。\par 
+	Go 支持在多平台运行和交叉编译。Go 语言在设计时尽可能避免使用操作系统的底层API，在语言层面实现了
+	并发模型，因此在不同平台和不同架构的处理器上具有一致的表现。目前Go支持包括Linux，Windows，FreeBSD，Sun在内的多种操作系统，
+	也支持X86，MIPS，ARM，RISC-V在内的多种处理器架构。\par
 	\subsection{Go语言的并发模型}
 	Go语言最为重要的特性来源于其在语言层面对并发的支持。这里讨论的是 Go 1.7 版本及之前的经典并发模型。
-	虽然在后期版本增加了一些新的功能或语法糖，但本质上还是离不开我们后面讨论的这些并发模型。
+	虽然在后期版本增加了一些新的功能或语法糖，但本质上还是离不开我们后面讨论的这些并发模型。接下来简单
+	介绍一些并发模型的用法。
 	\subsubsection{协程（Coroutine）}
 	我们知道，线程和进程都是在操作系统层面上实现的。相对于进程来说，线程可以减少调用时的上下文开销，具有更小的颗粒度。\par 
 	但是对于服务端接受HTTP请求这样的需求来说，线程的粒度依然过大。对每个请求或TCP连接开一个线程来处理的话，
@@ -212,7 +208,7 @@
 	\end{itemize}
 	\par
 	HTTP/1.0依然存在很多问题和值得优化的地方。比如对TCP连接的复用，大文件传输的优化，浏览器缓存较差等等。
-	1999年发布的HTTP/1.1就是为了解决这些问题的。该协议一直到2014年，依然在不断地进行修订。它具有以下
+	1999年发布的HTTP/1.1就是为了解决这些问题的\cite{darwish2016impact}。该协议一直到2014年，依然在不断地进行修订。它具有以下
 	几个显著特性：
 	\begin{itemize}
 		\item 持久连接（Keep-Alive机制）
@@ -303,7 +299,7 @@
 	以上就完成了客户端和服务端协商使用哪种协议的流程。该流程能够确保在协议不冲突的情况下尽可能
 	地强制客户端和服务端通过HTTP/2进行通信。
 	\subsection{WebSocket支持}
-	WebSocket协议本身不是HTTP标准的一部分。HTTP/1.x协议的重要缺陷之一就是难以进行交互式通信，
+	WebSocket协议本身不是HTTP标准的一部分。HTTP/1.1协议的重要缺陷之一就是难以进行交互式通信，
 	对于实时聊天和长轮询等功能只能通过开启大量HTTP请求来解决。为了解决这个问题，
 	IETF专门设计了一个新的协议WebSocket用于交互式通信的场景，其协议标准在RFC 6455中规定\cite{fette2011websocket}。\par
 	3.2节中提到，HTTP/2引入了服务端推送机制，如果能够在应用开发中使用这一机制，那么是能够
@@ -356,7 +352,7 @@
 	
 	\subsection{反向代理的实现}
 	前面提到，本网关通过反向代理功能升级HTTP服务。反向代理本身的功能十分简单，服务器根据客户端的请求，从其关系的一组或多组提供HTTP服务的源站服务器上获取数据，
-	然后再将这些数据返回给客户端。客户端只会得知反向代理服务器的IP地址，而不知道在代理服务器后面的服务器集群的存在。 \par 
+	然后再将这些数据返回给客户端。客户端只会得知反向代理服务器的IP地址，而不知道在代理服务器后面的服务器集群的存在\cite{郑光勇2010用反向代理技术保护}。 \par 
 	前一章提到的HTTP/1.1报文转换为HTTP/2报文就是在反向代理过程中实现的。反向代理服务器收到客户端的HTTP请求后，将报文
 	修改为HTTP/1.1格式的，发送到源站服务器；源站服务器响应后再将源站返回的HTTP/1.1的报文修改为HTTP/2格式的，返回给客户端。
 	当然，这其中还需要注意HTTP超时和源站崩溃的问题，设计中通过上文提到的Context监听这种异常情况。对于出现异常情况，根据HTTP状态码的定义响应对应的状态码即可。流程图如图所示：\par
@@ -467,10 +463,28 @@
 		\item 操作系统：Ubuntu 17.10 artful, Linux Kernel 4.13.0-46-generic
 	\end{itemize}
 	\subsection{压力测试}
-	压力测试使用的工具是nghttp2，这是一个专门为HTTP/2服务端应用设计的开源压力测试工具。测试方法和结果如下：\par 
+	\subsubsection{分析内容}
+	压力测试主要分析本文设计的网关在不同的极限条件下和线上环境下本网关的性能。
+	分别测试网关处理请求的极限，吞吐量极限和具有一定延迟的线上环境下的表现。
+	主要指标是请求的最小，最大和平均响应时间。吞吐量的指标是每秒传输的流量大小。
+	\subsubsection{方案设计}
+	压力测试主要使用nghttp2这个工具来完成。该工具通过简单的命令行参数就能完成
+	不同的测试方法。测试的具体方案如下：
 	\begin{enumerate}
-	\item 源站放在服务器本地，源站提供简单的静态页面的访问，单个资源大小均小于20KB。nghttp2随机访问任意URL。nghttp2使用10个线程进行请求，共计请求一万次。
-	总计在2.85s完成了所有请求，平均每秒完成3507.9个请求，失败请求数为0。其它统计数据如下：
+		\item 源站放在服务器本地，源站提供简单的静态页面的访问，单个资源大小均小于20KB。nghttp2随机访问任意URL。nghttp2使用10个线程进行请求，共计请求一万次。测试网关能够处理的并发请求极限。
+		\item 源站放置在服务器本地，源站提供几个4GB以上的大文件的静态资源访问，开启十个线程GET访问的资源。并比较关闭HTTPS支持时的差别。测试网关的极限流量吞吐量。
+		\item 源站放置在远程服务器上，模拟线上环境，源站返回响应存在一定延时。源站的资源与测试1相同，但是平均有200ms左右的延时且较不稳定。测试方法与
+		测试1也相同。测试线上环境下的表现。
+	\end{enumerate}
+	\par
+	压力测试在同等环境下对Nginx，Apache 和本网关进行比较。Nginx 使用的 1.13.0 stable 版本，Apache 使用 2.2.0 版本。
+	Nginx和Apache配置较为复杂，测试时尽量设置成本网关类似的配置，
+	例如TLS协议使用TLSv1.2版本。
+
+	\subsubsection{结果分析}
+	\paragraph{本网关测试结果：}
+	\begin{enumerate}
+	\item 测试1总计在2.85s完成了所有请求，平均每秒完成3507.9个请求，失败请求数为0。其它统计数据如下：
 	\begin{center}
 	\begin{tabular}{|c|c|c|c|} 
 		\hline
@@ -481,10 +495,9 @@
 		\hline
 	\end{tabular}
 	\end{center}
-	\item 源站放置在服务器本地，源站提供几个4GB以上的大文件的静态资源访问。开启十个线程GET访问的资源。平均流量大小为124.78M/s。
+	\item 运行测试2时平均传输流量速率为124.78M/s。
 	但关闭HTTPS支持之后则能够达到2000M/s以上，不难发现流量瓶颈主要来源于网关加密资源带来的开销。
-	\item 源站放置在远程服务器上，模拟线上环境，源站返回响应存在一定延时。源站的资源与测试1相同，但是平均有200ms左右的延时且较不稳定。测试方法与
-	测试1也相同。总计在296.02s完成了所有请求，平均每秒完成337.5个请求，失败请求数为2（发生了超时，响应500状态码）。
+	\item 测试3总计在296.02s完成了所有请求，平均每秒完成337.5个请求，失败请求数为2（发生了超时，响应500状态码）。
 	反向代理产生的延迟和直接请求源站并没有显著差别，反向代理产生的损耗可以忽略不计，统计数据如下：
 	\begin{center}
 		\begin{tabular}{|c|c|c|c|} 
@@ -497,14 +510,83 @@
 		\end{tabular}
 		\end{center}
 	\end{enumerate}
+
+	\paragraph{Nginx测试结果：}
+	\begin{enumerate}
+	\item 测试1总计在1.99s完成了所有请求，平均每秒完成5025.9个请求，失败请求数为0。其它统计数据如下：
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|} 
+		\hline
+		 \ & Min & Max & Mean  \\ \hline
+		time for request & 0.98ms  & 5.34ms & 2.76ms \\ \hline
+		time for connect & 3.85ms & 10.98ms & 8.01ms \\ \hline
+		time to 1st byte & 8.30ms  & 14.76ms & 9.98ms \\
+		\hline
+	\end{tabular}
+	\end{center}
+	\item 运行测试2时平均传输流量速率为137.82M/s。
+	\item 测试3总计在313.86s完成了所有请求，平均每秒完成318.61个请求，失败请求数为4（发生了超时，响应500状态码）。
+	具体统计数据如下：
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|} 
+			\hline
+			 \ & Min & Max & Mean  \\ \hline
+			time for request & 70.23ms  & 1578.31ms & 209.10ms \\ \hline
+			time for connect & 15.57ms & 20.01ms & 16.77ms \\ \hline
+			time to 1st byte & 99.37ms  & 657.23ms & 220.47ms \\
+			\hline
+		\end{tabular}
+		\end{center}
+	\end{enumerate}
+
+	\paragraph{Apache测试结果：}
+	\begin{enumerate}
+	\item 测试1总计在8.17s完成了所有请求，平均每秒完成1230.67个请求，失败请求数为0。其它统计数据如下：
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|} 
+		\hline
+		 \ & Min & Max & Mean  \\ \hline
+		time for request & 1.34ms  & 5.90ms & 2.99ms \\ \hline
+		time for connect & 3.72ms & 13.45ms & 9.96ms \\ \hline
+		time to 1st byte & 6.71ms  & 17.98ms & 11.35ms \\
+		\hline
+	\end{tabular}
+	\end{center}
+	\item 运行测试2时平均传输流量速率为127.18M/s。
+	\item 测试3总计在296.02s完成了所有请求，平均每秒完成337.5个请求，失败请求数为2（发生了超时，响应500状态码）。
+	反向代理产生的延迟和直接请求源站并没有显著差别，反向代理产生的损耗可以忽略不计，统计数据如下：
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|} 
+			\hline
+			 \ & Min & Max & Mean  \\ \hline
+			time for request & 85.37ms  & 1756.99ms & 232.54ms \\ \hline
+			time for connect & 14.86ms & 39.24ms & 19.90ms \\ \hline
+			time to 1st byte & 156.38ms  & 703.48ms & 254.65ms \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\end{enumerate}
+
 	\par
 	从上述数据可以看出，本网关具有较强的并发性能，且能够高效处理存在I/O阻塞的异步事件。
+	与Nginx和Apache的性能比较起来，在流量吞吐能力上与这两者差别不大；在处理I/O阻塞严重的
+	异步事件时性能也没有太大差别；但是在应对大规模并发请求时，本网关性能明显优于Apache但
+	相比Nginx稍差。
 
 	\subsection{火焰图}
-	火焰图是一种用来分析程序内部调用开销的方法\cite{gregg2017visualizing}。它通过可视化地展示各个事件占用的CPU时间比例
+	\subsubsection{分析内容}
+	火焰图（Flame Graph）是一种用来分析程序内部调用开销的方法\cite{gregg2017visualizing}。它通过可视化地展示各个事件占用的CPU时间比例
 	来帮助我们分析程序的性能瓶颈，能够帮助我们捕捉到压力测试下可能发现不了的问题。\par
-	Go语言内置了pprof包用于监测性能，配合一个使用Perl语言编写的开源火焰图可视化工具FlameGraph即可对运行中的程序绘制火焰图。
-	测试时通过nghttp2工具模拟了线上环境，对本网关绘制的火焰图如下：\\
+	火焰图中 y 轴表示调用栈，每一层都是一个函数。调用栈越深，火焰就越高，顶部就是正在执行的函数，下方都是它的父函数。
+	x 轴表示抽样数，如果一个函数在 x 轴占据的宽度越宽，就表示它被抽到的次数多，即执行的时间长。我们要寻找是否存在某个顶层调用宽度过大，这可能是
+	我们网关存在的潜在的性能瓶颈。\par
+	\subsubsection{方案设计}
+	Go语言内置了pprof包用于监测性能，配合一个使用Perl语言编写的开源火焰图可视化工具FlameGraph即可对运行中的程序绘制火焰图。\par 
+	要使用pprof包，需要在网关内插入一段代码，在一个新的端口打开一个Web Server。FlameGraph能够
+	实时通过这个端口拉取各个调用的使用状况，并取得一段时间内的平均值（测试中是10s）。
+	最后根据这些数据绘制出火焰图。实际测试时通过nghttp2工具模拟了线上环境。
+	\subsubsection{结果分析}
+	对本网关绘制的火焰图如下：\\
 	\includegraphics[scale=0.158]{Figures/flame_graph_simple.jpg}
 	\par 
 	从图中可以看出，各调用之间分布较为均匀。runtime开头的调用多为Go底层对协程上下文切换等操作的
@@ -515,11 +597,19 @@
 	\begin{spacing}{2}
 		\section{总结与展望}
 	\end{spacing}
-	 本文设计了一个基于IPv6和IPv4双栈环境的HTTP/2过渡应用， 能够帮助用户以较低的成本
-	 将原有的IPv4环境下HTTP/1.1的应用通过本网关以反向代理技术升级支持IPv6和HTTP/2协议，
-	 并且提供了负载均衡技术，能够帮助原有的应用进行横向扩容，且具有较好的并发性能。适合作为
-	 当前多种协议共存环境下过渡升级新协议的服务端应用。\par 
-	 但本文设计的这一应用依然有需要改进的地方：
+	在当前服务端运维开发中，对性能和各个方面的要求越来越高。原有的HTTP/1.1协议和IPv4协议已经无法满足要求，
+	升级到HTTP/2协议和IPv6协议已经刻不容缓。通过反向代理技术将旧有的应用升级协议是一种常用手段，但目前
+	常用的反向代理服务器Apache HTTP Server具有并发性能较差的问题，而Nginx具有跨平台能力较差的问题。\par
+	 本文设计了一个基于IPv6和IPv4双栈环境的HTTP/2反向代理网关， 能够帮助用户以较低的成本
+	 将原有的IPv4环境下HTTP/1.1的应用通过本网关以反向代理技术升级支持IPv6和HTTP/2协议。\par 
+	 本文分析了Go语言的技术特点和其并发模型，阐明了通过Go语言开发网关的技术优势。
+	 接着通过对RFC标准的解读，分析了HTTP/1.1升级HTTP/2的方法，根据目前主流浏览器客户端的实现针对性地
+	 添加了HTTP/1.1到HTTP/2的协商方法，添加了对WebSocket协议本身的支持和基于TLSv1.2协议的HTTPS支持。\par
+	 本设计还提供了两种负载均衡策略，能够帮助原有的应用在不同的业务场景下进行横向扩容。一种是基于加权轮询算法
+	 的负载均衡策略，适合在高并发环境下作为负载均衡策略；另一种是基于一致性哈希算法的，适合在用户和服务器存在
+	 cookie等持久交互时的负载均衡策略。\par 
+	 综上所述，本文设计的这一网关适合作为当前多种协议共存当前多种协议共存环境下过渡升级新协议的服务端应用。\par 
+	 但它依然有需要改进的地方：
 	 \begin{itemize}
 		\item 直接使用Go内置已经实现的TLSv1.2加密方法固然方便，但效率较低，在大流量情况下容易出现瓶颈。
 		最好能够自己实现最新的TLSv1.3加密方法，能够大幅度提高加密效率。
@@ -535,9 +625,9 @@
 	\addcontentsline{toc}{section}{致谢}
 	大学四年转瞬即逝，四年以来在中国地质大学（武汉），结交了许多老师和同学，
 	得到了很多帮助，让我从一个懵懂的高中生成长为了一个合格的本科生。\par 
-	感谢我的导师张峰老师。张老师是一位治学严谨，和蔼可亲的导师，从学习内容到人生疑惑，
-	张老师都能给我耐心的指导。同时感谢中国地质大学（武汉）网络中心和帅赟老师，
-	给了我在大学生涯中以大量的计算机软件开发的相关实践机会、资源和指导。\par 
+	感谢我的两位导师，陈伟涛老师和张峰老师，给我的毕业论文和研究方向给了非常多有价值的意见和指导。
+	同时感谢中国地质大学（武汉）网络中心和帅赟老师，
+	给了我在大学生涯中以大量的计算机软件开发的相关实践机会和资源。\par 
 	感谢中国地质大学（武汉）计算机学院，给了我们良好的学习和生活环境，感谢每一位
 	辛勤付出的老师和职工。\par
 	感谢大学期间实习的两个单位，一个是大三暑假实习的武汉微派网络有限公司，
